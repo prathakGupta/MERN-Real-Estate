@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res ,next) => {
     const { username , email, password} = req.body;
     const hashedpassword =bcryptjs.hashSync(password ,10);
     const newUser = new User({username, email,password : hashedpassword});
@@ -18,7 +18,8 @@ export const signup = async (req, res) => {
             res.status(400).json({ error: "Email already exists" });
         } else {
             // Handle other errors
-            res.status(500).json({ error: err.message || "Internal Server Error" });
+            // res.status(500).json({ error: err.message || "Internal Server Error" });
+            next(err)
         }
     }
 };
